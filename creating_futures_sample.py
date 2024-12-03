@@ -42,8 +42,12 @@ mpl.rcParams.update(mpl.rcParamsDefault)
 # Python Class: Syntax and Examples [Python Tutorial]: https://mimo.org/glossary/python/class
 
 The class "sampling_futures" takes as inputs:
-    - aaa
-    - 
+    - input_file_path: Path of input file to import
+    - n_sample: int, number of samples
+    - dict_constant: Dictionary of values that remain constant in the form of {'Ymax'=1}
+    - sampling_method: "Step" or "Size"
+    - future_zero: True or False
+    - output_file: 
 '''
 
 class sampling_futures:
@@ -58,7 +62,7 @@ class sampling_futures:
         else: 
             self.n_sample = n_sample # self.n_sample refers to the number of futures 
         
-        self.i = key_parameters['i']
+        self.i = key_parameters
         '''MISSING PARAMETERS...
         k1 = 0 # Value of first time period
         delK = 5 # Time step of optimisation (i.e., length of each period)
@@ -68,19 +72,21 @@ class sampling_futures:
         T = int(1 + (last_year-first_year)/delK) # Number of time periods evaluated, equivalent to 17 if delK = 5 (i.e., 80 years)
         k = list(range(k1,T))'''
 
-        self.dict_constant = dict_constant
+        self.dict_constant = dict_constant # Dictionary of values that remain constant
         self.sampling_method = sampling_method # can take the values of 'step' or 'size'
     
         # ===================================== Importing and Formating dataframe =====================================
-        df = pd.read_excel(self.input_file, index_col = "Parameter")
+        df = pd.read_excel(input_file_path, index_col = "Parameter")
         self.units = dict(zip(df.index, df.Unit)) # Save all units in a dictionary for later use
         # Separate all constant parameters
         constant = df[df.minimum == df.maximum]
         constant = constant[['minimum']].T
         self.constant = pd.concat([constant]*(self.n_sample),axis=0,ignore_index=True)
 
-        # Get a data frame with selected columns
+        # Get a dataframe with rows to be sampled (i.e., rows whose max and min parameter are different)
         df = df[df.minimum != df.maximum]
+
+        self.sampled_parameters = df.index.to_list()
         self.df_Sampling_step = df[['Sampling_step']]
 
         self.df = df
@@ -88,16 +94,16 @@ class sampling_futures:
     def sample(self):
         if self.sampling_method == 'step':
             # Modify dataframe by Sampling step
-            self.df = self.df[['minimum','maximum']]
-            self.df = self.df.div(self.df_Sampling_step, axis=0)
+            df = self.df[['minimum','maximum']]
+            df = df.div(self.df_Sampling_step.Sampling_step, axis=0)
 
-            dict_ranges = self.df.T.to_dict('records')
+            dict_ranges = df.T.to_dict('records')
             dict_ranges = dict_ranges[0]
 
-            lbounds = self.df["minimum"].values.tolist()
+            lbounds = df["minimum"].values.tolist()
             lbounds = [int(x) for x in lbounds]
 
-            ubounds  = self.df["maximum"].values.tolist()
+            ubounds  = df["maximum"].values.tolist()
             ubounds = [int(x) for x in ubounds]
 
             sampler = qmc.LatinHypercube(d=len(lbounds))
@@ -107,7 +113,7 @@ class sampling_futures:
             df_LHS = df_LHS.set_axis(dict_ranges, axis=1)
             
             # If future_zero == True, add the min values for "future ID_0"
-            if self.future_zero == True: df_LHS = pd.concat([self.df[["minimum"]].T,df_LHS], axis = 0, ignore_index=True) # Add the min values for "future ID_0"
+            if self.future_zero == True: df_LHS = pd.concat([df[["minimum"]].T,df_LHS], axis = 0, ignore_index=True) # Add the min values for "future ID_0"
             
             df_LHS.index.names = ['future_id']
 
@@ -117,16 +123,18 @@ class sampling_futures:
             # Creating model input table
             df_input = pd.concat([df_LHS.T, self.constant], axis=1)
             df_input.index.names = ['future_id']
-            display(df_input.head(5))
+            
+            df_input.to_excel(self.output_file, index=True)
 
-            return df_input, units, dict_ranges
+            return df_input
+            #return df
         
-        elif self.sampling_method == 'step':
+        elif self.sampling_method == 'size':
             df_Number_samples = self.df[['N_samples']].rename(columns={'N_samples':"maximum"})
             df_Number_samples[["minimum"]] = 1
-            self.df = self.df[['minimum','maximum']]
+            df = self.df[['minimum','maximum']]
 
-            dict_ranges = self.df.T.to_dict('records')[0]
+            dict_ranges = df.T.to_dict('records')[0]
 
             lbounds = df_Number_samples["minimum"].values.tolist()
             lbounds = [int(x) for x in lbounds]
@@ -141,7 +149,7 @@ class sampling_futures:
             df_LHS = df_LHS.set_axis(dict_ranges, axis=1)
 
             # If future_zero == True, add the min values for "future ID_0"
-            if self.future_zero == True: df_LHS = pd.concat([self.df[["minimum"]].T,df_LHS], axis = 0, ignore_index=True) 
+            if self.future_zero == True: df_LHS = pd.concat([df[["minimum"]].T,df_LHS], axis = 0, ignore_index=True) 
             df_LHS.index.names = ['future_id']
 
             # Return to original units
@@ -157,17 +165,12 @@ class sampling_futures:
             df_input = pd.concat([df_LHS,self.constant], axis=1)
             df_input.index.names = ['future_id']
             df_LHS = df_LHS.T
-
-            display(df_input.head(5))
-
-            return df_input, units, dict_ranges
+            
+            df_input.to_excel(self.output_file, index=True)
+            self.df_input = df_input
+            return df_input
         
         else:
             print()
-            raise ValueError("%s - The sampling_method argumetns accepts either 'step' or 'size'." %self.sampling_method)
-
-
-    '''Uncertainties = dict(zip(df_LHS.index.to_list(),['DACCS Energy Requirements','DOCCS Energy Requirements','EW Energy Requirements', 'OA Energy Requirements', 'Year at which energy becomes available for CDR',
-    'A/R Land Requirements','BECCS Land Requirements','Land Limit','A/R Experience Parameter','BC Experience Parameter','BECCS Experience Parameter','DACCS Experience Parameter',
-    'DOCCS Experience Parameter','EW Experience Parameter','OA Experience Parameter','SCS Experience Parameter','Removals Required (2020 - 2100)','A/R Maximum Potential', 'BC Maximum Potential', 'BECCS Maximum Potential',
-    'DACCS Maximum Potential', 'DOCCS Maximum Potential', 'EW Maximum Potential', 'OA Maximum Potential', 'SCS Maximum Potential', 'Annual Limit to Geological Injection']))'''
+            raise ValueError("%s - The sampling_method arguments accepts either 'step' or 'size'." %self.sampling_method)
+        
