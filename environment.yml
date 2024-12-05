@@ -11,6 +11,8 @@ dependencies:
   - pyomo
   - scipy
   - tqdm
+  - pooch>=1.8
+  - pyam>=2.3
   - pip:
     - scikit-learn
     - graphviz
