@@ -86,7 +86,7 @@ class model_solving_futures:
         
         # ======= IMPORTING MODELLING INPUTS =======
         if self.file_type == 'xlsx': self.df_input = pd.read_excel(futures_file, index_col ='future_id')
-        if self.file_type == 'csv': self.df_input = pd.csv(futures_file, index_col ='future_id')
+        if self.file_type == 'csv': self.df_input = pd.read_csv(futures_file, index_col ='future_id')
 
         # Assign information for the number of futures to solve:
         length_input = self.df_input.index.size # Number of futures in the input dataframe
@@ -764,17 +764,17 @@ def main():
         key_parameters = yaml.safe_load(f)
     n_evaluate = 'all'
 
-    #futures_file = Path('PortfolioFiles/sample_of_futures/revision_one_05.12.2024.xlsx')
-    futures_file = Path('PortfolioFiles\sample_of_futures\File Name_15.08.2024.xlsx')
+    futures_file = Path('PortfolioFiles/sample_of_futures/manually_selecting_10.12.2024.csv')
+    #futures_file = Path('PortfolioFiles\sample_of_futures\File Name_15.08.2024.xlsx')
     extra_resources = Path('PortfolioFiles/Portfolio_Files_Latest/extra_resources.xlsx')
 
-    config = {'output_string': "results_with_geo", 
+    config = {'output_string': "results_10f_manual", 
             'output_path': 'PortfolioFiles/results_from_modelling/',
             'output_type': "csv"} # xlsx or csv
 
     output_file = f"{config['output_path']}{config['output_string']}_{date.today().strftime('%d.%m.%Y')}.{config['output_type']}"
 
-    attempt = model_solving_futures(key_parameters, futures_file, n_evaluate, extra_resources, output_file, num_jobs=10, front_solve=3)
+    attempt = model_solving_futures(key_parameters, futures_file, n_evaluate, extra_resources, output_file, num_jobs=5, front_solve=3)
     out = attempt.solving_with_parallel()
     
     return out

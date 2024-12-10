@@ -82,11 +82,11 @@ class sampling_futures:
             if df.loc[row, 'Resource'] in sampling_method[1]['not_sampled']:
                 pass
             else:   
-                if self.sampling_method == 'size':
+                if self.sampling_method == 'step':
                     df.loc[row,'Sampling_step'] = sampling_method[1][self.sampling_method][df.loc[row, 'Resource']]
                     df.loc[row,'N_samples'] = 1 + (float(df.loc[row,'maximum'])-float(df.loc[row,'minimum']))/df.loc[row,'Sampling_step']
                 
-                if self.sampling_method == 'step':
+                if self.sampling_method == 'size':
                     if df.loc[row, 'Resource'] in sampling_method[1]['exceptions']:
                         df.loc[row,'Sampling_step'] = sampling_method[1]['exceptions'][df.loc[row, 'Resource']]
                         df.loc[row,'N_samples'] = 1 + (float(df.loc[row,'maximum'])-float(df.loc[row,'minimum']))/df.loc[row,'Sampling_step']
@@ -127,7 +127,7 @@ class sampling_futures:
             df_LHS.index.names = ['future_id']
 
             # Return to original units
-            df_LHS = df_LHS.T.mul(self.df_Sampling_step.Sampling_step, axis=0).astype(float).round(3)
+            df_LHS = df_LHS.T.mul(self.df_Sampling_step.Sampling_step, axis=0).astype(float)
 
             # Creating model input table
             df_input = pd.concat([df_LHS.T, self.constant], axis=1)
