@@ -58,24 +58,14 @@ class sampling_futures:
 
         self.future_zero = future_zero # Determines whether a "all min" future wants to be added at the beginning
         
-        self.n_lhs = n_sample # This refers to the number of times the LHS methos will be sampled
+        self.n_lhs = n_sample # This refers to the number of times the LHS method will be sampled
         if future_zero == True: 
-            self.n_sample = n_sample + 1 # self.n_sample refers to the number of futures 
+            self.n_sample = n_sample + 1 # self.n_sample refers to the number of futures in the output file
         else: 
             self.n_sample = n_sample # self.n_sample refers to the number of futures 
-        
-        #self.i = key_parameters['i']
-        '''MISSING PARAMETERS...
-        k1 = 0 # Value of first time period
-        delK = 5 # Time step of optimisation (i.e., length of each period)
-        N = 4 # Number of segments for piecewise linear approximation
-        first_year = 2020 # Year corresponding to first time period
-        last_year = 2100 # Year corresponding to last time period
-        T = int(1 + (last_year-first_year)/delK) # Number of time periods evaluated, equivalent to 17 if delK = 5 (i.e., 80 years)
-        k = list(range(k1,T))'''
 
         self.dict_constant = dict_constant # Dictionary of values that remain constant
-        self.sampling_method = sampling_method # can take the values of 'step' or 'size'
+        self.sampling_method = sampling_method[0] # can take the values of 'step' or 'size'
         
         # ===================================== Importing and Formating dataframe =====================================
         df = pd.read_excel(input_file_path, index_col = "Parameter")
@@ -87,6 +77,23 @@ class sampling_futures:
 
         # Get a data frame columns to be sampled columns
         df = df[df.minimum != df.maximum]
+
+        for row in df.index:
+            if df.loc[row, 'Resource'] in sampling_method[1]['not_sampled']:
+                pass
+            else:   
+                if self.sampling_method == 'size':
+                    df.loc[row,'Sampling_step'] = sampling_method[1][self.sampling_method][df.loc[row, 'Resource']]
+                    df.loc[row,'N_samples'] = 1 + (float(df.loc[row,'maximum'])-float(df.loc[row,'minimum']))/df.loc[row,'Sampling_step']
+                
+                if self.sampling_method == 'step':
+                    if df.loc[row, 'Resource'] in sampling_method[1]['exceptions']:
+                        df.loc[row,'Sampling_step'] = sampling_method[1]['exceptions'][df.loc[row, 'Resource']]
+                        df.loc[row,'N_samples'] = 1 + (float(df.loc[row,'maximum'])-float(df.loc[row,'minimum']))/df.loc[row,'Sampling_step']
+                        
+                    else:
+                        df.loc[row,'N_samples'] = sampling_method[1][self.sampling_method][df.loc[row, 'Resource']]
+                        df.loc[row,'Sampling_step'] = (float(df.loc[row,'maximum'])-float(df.loc[row,'minimum']))/(df.loc[row,'N_samples']-1)
         
         self.sampled_parameters = df.index.to_list()
         self.df_Sampling_step = df[['Sampling_step']]
@@ -120,7 +127,7 @@ class sampling_futures:
             df_LHS.index.names = ['future_id']
 
             # Return to original units
-            df_LHS = df_LHS.T.mul(self.df_Sampling_step.Sampling_step, axis=0)
+            df_LHS = df_LHS.T.mul(self.df_Sampling_step.Sampling_step, axis=0).astype(float).round(3)
 
             # Creating model input table
             df_input = pd.concat([df_LHS.T, self.constant], axis=1)
@@ -130,7 +137,6 @@ class sampling_futures:
             if self.output_type == 'csv': df_input.to_csv(self.output_file, index=True)
 
             return df_input, self.units, self.sampled_parameters
-            #return df
         
         elif self.sampling_method == 'size':
             df_Number_samples = self.df[['N_samples']].rename(columns={'N_samples':"maximum"})
@@ -151,18 +157,18 @@ class sampling_futures:
             df_LHS = pd.DataFrame.from_records(sample)    
             df_LHS = df_LHS.set_axis(dict_ranges, axis=1)
 
-            # If future_zero == True, add the min values for "future ID_0"
-            if self.future_zero == True: df_LHS = pd.concat([df[["minimum"]].T,df_LHS], axis = 0, ignore_index=True) 
-            df_LHS.index.names = ['future_id']
-
             # Return to original units
             #df_LHS = df_LHS.T.mul(df_Sampling_step.Sampling_step, axis=0)
-            for futureID in range(1,self.n_lhs+1):
+            for futureID in range(0,self.n_lhs):
                 for parameter in df_LHS.columns:
                     if df_LHS.loc[futureID,parameter] == 1:
                         df_LHS.loc[futureID,parameter] = self.df.loc[parameter,"minimum"]
                     else:
                         df_LHS.loc[futureID,parameter] = round(self.df.loc[parameter,"minimum"] + (df_LHS.loc[futureID,parameter]-1)*self.df_Sampling_step.loc[parameter,"Sampling_step"], 3)
+            
+            # If future_zero == True, add the min values for "future ID_0"
+            if self.future_zero == True: df_LHS = pd.concat([df[["minimum"]].T,df_LHS], axis = 0, ignore_index=True) 
+            df_LHS.index.names = ['future_id']
 
             # Creating model input table
             df_input = pd.concat([df_LHS,self.constant], axis=1)

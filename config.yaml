@@ -1,7 +1,42 @@
-input_file_path: "PortfolioFiles/Portfolio_Files_Latest/All data Step size.xlsx"
+input_file_path: "PortfolioFiles/Portfolio_Files_Latest/All data.xlsx" # NOTE: 'step' or 'size' do not require different input files any longer
 n_sample: 5 # Integer >0
-sampling_method: 'step' # step or size
-future_zero: False # True or False
-output_string: "revision_one"
+sampling_method: 'size' # step or size
+future_zero: True # True or False
+output_string: "checking"
 output_path: "PortfolioFiles/sample_of_futures/"
 output_type: "csv" # xlsx or csv
+
+# If Sampling size (number of values a parameter can take) is given:
+sampling_step:
+  step:
+    Energy: 4
+    Land: 3
+    ER: 10
+    Ymax: 10
+    GeoSt: 5
+  not_sampled:
+    OPEX: "-"
+    SCref: "-"
+    Yref: "-"
+    Xmax: "-"
+  exceptions:
+    CDRRequired: 100000000000 #1e11 tCO2
+    EnergyL: 5 # years
+    LandL: 100000000 #1e8 Mha
+
+# If Sampling step (step between values of a parameter) is given:
+sampling_size:
+  size:
+    Energy: 0.5 # GJ/tCO2
+    Land: 0.01 # ha/tCO2
+    ER: 0.01 # percentage
+    Ymax: 500000000 # 5e8 
+    GeoSt: 4000000000 #4e9 GtCO2/yr
+    CDRRequired: 100000000000 #1e11 tCO2
+    EnergyL: 5 # years
+    LandL: 100000000 #1e8 ha
+  not_sampled:
+    OPEX: "-"
+    SCref: "-"
+    Yref: "-"
+    Xmax: "-"
