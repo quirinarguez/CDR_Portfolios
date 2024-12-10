@@ -16,3 +16,9 @@ dependencies:
   - pip:
     - scikit-learn
     - graphviz
+    - pyDOE2
+    - seaborn 
+    - pyomo
+    - plotly==5.24.1 # https://pypi.org/project/plotly/
+    - PyYAML 
+    - openpyxl

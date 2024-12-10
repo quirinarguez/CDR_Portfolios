@@ -26,7 +26,7 @@ import logging
 from pyomo.environ import *
 from IPython.display import display
 import yaml
-
+from pathlib import Path
 
 
 from tqdm import tqdm # Source: https://danshiebler.com/2016-09-14-parallel-progress-bar/ --> Thanks!
@@ -51,9 +51,11 @@ The class "sampling_futures" takes as inputs:
 '''
 
 class sampling_futures:
-    def __init__(self, key_parameters, input_file_path, n_sample, dict_constant, sampling_method, future_zero, output_file):
+    def __init__(self, input_file_path, n_sample, dict_constant, sampling_method, future_zero, output_file, output_type):
         self.input_file = input_file_path
         self.output_file = output_file
+        self.output_type = output_type
+
         self.future_zero = future_zero # Determines whether a "all min" future wants to be added at the beginning
         
         self.n_lhs = n_sample # This refers to the number of times the LHS methos will be sampled
@@ -62,7 +64,7 @@ class sampling_futures:
         else: 
             self.n_sample = n_sample # self.n_sample refers to the number of futures 
         
-        self.i = key_parameters
+        #self.i = key_parameters['i']
         '''MISSING PARAMETERS...
         k1 = 0 # Value of first time period
         delK = 5 # Time step of optimisation (i.e., length of each period)
@@ -74,7 +76,7 @@ class sampling_futures:
 
         self.dict_constant = dict_constant # Dictionary of values that remain constant
         self.sampling_method = sampling_method # can take the values of 'step' or 'size'
-    
+        
         # ===================================== Importing and Formating dataframe =====================================
         df = pd.read_excel(input_file_path, index_col = "Parameter")
         self.units = dict(zip(df.index, df.Unit)) # Save all units in a dictionary for later use
@@ -83,9 +85,9 @@ class sampling_futures:
         constant = constant[['minimum']].T
         self.constant = pd.concat([constant]*(self.n_sample),axis=0,ignore_index=True)
 
-        # Get a dataframe with rows to be sampled (i.e., rows whose max and min parameter are different)
+        # Get a data frame columns to be sampled columns
         df = df[df.minimum != df.maximum]
-
+        
         self.sampled_parameters = df.index.to_list()
         self.df_Sampling_step = df[['Sampling_step']]
 
@@ -124,9 +126,10 @@ class sampling_futures:
             df_input = pd.concat([df_LHS.T, self.constant], axis=1)
             df_input.index.names = ['future_id']
             
-            df_input.to_excel(self.output_file, index=True)
+            if self.output_type == 'xlsx': df_input.to_excel(self.output_file, index=True)
+            if self.output_type == 'csv': df_input.to_csv(self.output_file, index=True)
 
-            return df_input
+            return df_input, self.units, self.sampled_parameters
             #return df
         
         elif self.sampling_method == 'size':
@@ -166,11 +169,11 @@ class sampling_futures:
             df_input.index.names = ['future_id']
             df_LHS = df_LHS.T
             
-            df_input.to_excel(self.output_file, index=True)
-            self.df_input = df_input
-            return df_input
+            if self.output_type == 'xlsx': df_input.to_excel(self.output_file, index=True)
+            if self.output_type == 'csv': df_input.to_csv(self.output_file, index=True)
+            
+            return df_input, self.units, self.sampled_parameters
         
         else:
             print()
             raise ValueError("%s - The sampling_method arguments accepts either 'step' or 'size'." %self.sampling_method)
-        

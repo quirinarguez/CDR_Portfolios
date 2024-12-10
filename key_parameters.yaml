@@ -1,0 +1,63 @@
+# Useful non-varying parameters
+i: # List of CDR options
+  - 'BECCS'
+  - 'A/R'
+  - 'SCS'
+  - 'BC'
+  - 'DACCS'
+  - 'EW'
+  - 'OA'
+  - 'DOCCS'
+k1: 0 # Value of first time period
+delK: 5 # Time step of optimisation (i.e., length of each period)
+N: 4 # Number of segments for piecewise linear approximation
+first_year: 2020 # Year corresponding to first time period
+last_year: 2100 # Year corresponding to last time period
+s: # Whether a CDR option requires storage or not
+  'BECCS': 1
+  'A/R': 0
+  'SCS': 0
+  'BC': 0
+  'DACCS': 1
+  'EW': 0
+  'OA': 0
+  'DOCCS': 1
+rE: 0.03 # Economic Discount Rate
+LTIni: 
+  'BECCS': 10
+  'A/R': 25
+  'SCS': 5
+  'BC': 10
+  'DACCS': 10
+  'EW': 5
+  'OA': 5
+  'DOCCS': 5
+LT: 
+  'BECCS': 20
+  'A/R': 55
+  'SCS': 20
+  'BC': 25
+  'DACCS': 25
+  'EW': 10
+  'OA': 20
+  'DOCCS': 25
+# Energy Limits: Logistic curve parameters
+k_logi: 0.5 # Exponential
+L: 600000000000 # Asymptote (600 e9 GJ)
+t0: 10 
+# Technologies available at later times
+DACCS_available: 2030
+DOCCS_available: 2040
+OA_available: 2050
+
+# For plotting purposes
+color_map: 'Set2'
+color_per_CDR:
+  'BECCS': 0.8
+  'A/R': 0.1
+  'SCS': 0.9
+  'BC': 0.2
+  'DACCS': 0.7
+  'EW': 0.3
+  'OA': 0.4
+  'DOCCS': 0.5

@@ -1,0 +1,234 @@
+all_metrics_names:
+  A/R: Maximum Capacity of AR
+  A/R_2050: Maximum Capacity A/R by 2050
+  A/R_2075: Maximum Capacity A/R by 2075
+  A/R_2100: Maximum Capacity A/R by 2100
+  A/R_removed: Removals delivered by A/R
+  BC: Maximum Capacity of BC
+  BC_2050: Maximum Capacity BC by 2050
+  BC_2075: Maximum Capacity BC by 2075
+  BC_2100: Maximum Capacity BC by 2100
+  BC_removed: Removals delivered by BC
+  BECCS: Maximum Capacity of BECCS
+  BECCS_2050: Maximum Capacity BECCS by 2050
+  BECCS_2075: Maximum Capacity BECCS by 2075
+  BECCS_2100: Maximum Capacity BECCS by 2100
+  BECCS_removed: Removals delivered by BECCS
+  CDRRequired: Removals Required (2020 - 2100)
+  Costs: Discounted Cumulative Costs
+  DACCS: Maximum Capacity of DACCS
+  DACCS_2050: Maximum Capacity DACCS by 2050
+  DACCS_2075: Maximum Capacity DACCS by 2075
+  DACCS_2100: Maximum Capacity DACCS by 2100
+  DACCS_removed: Removals delivered by DACCS
+  DOCCS: Maximum Capacity of DOCCS
+  DOCCS_2050: Maximum Capacity DOCCS by 2050
+  DOCCS_2075: Maximum Capacity DOCCS by 2075
+  DOCCS_2100: Maximum Capacity DOCCS by 2100
+  DOCCS_removed: Removals delivered by DOCCS
+  ER_A/R: A/R Experience Parameter
+  ER_BC: BC Experience Parameter
+  ER_BECCS: BECCS Experience Parameter
+  ER_DACCS: DACCS Experience Parameter
+  ER_DOCCS: DOCCS Experience Parameter
+  ER_EW: EW Experience Parameter
+  ER_OA: OA Experience Parameter
+  ER_SCS: SCS Experience Parameter
+  EW: Maximum Capacity of EW
+  EW_2050: Maximum Capacity EW by 2050
+  EW_2075: Maximum Capacity EW by 2075
+  EW_2100: Maximum Capacity EW by 2100
+  EW_removed: Removals delivered by EW
+  Energy: Energy used for CDR
+  EnergyL: Year at which energy becomes available for CDR
+  Energy_A/R: A/R Energy Requirements
+  Energy_BC: BC Energy Requirements
+  Energy_BECCS: BECCS Energy Requirements
+  Energy_DACCS: DACCS Energy Requirements
+  Energy_DOCCS: DOCCS Energy Requirements
+  Energy_EW: EW Energy Requirements
+  Energy_OA: OA Energy Requirements
+  Energy_SCS: SCS Energy Requirements
+  GeoSt: Annual Limit to Geological Injection
+  Land: Land used for CDR
+  LandL: Land Limit
+  Land_A/R: A/R Land Requirements
+  Land_BC: BC Land Requirements
+  Land_BECCS: BECCS Land Requirements
+  Land_DACCS: DACCS Land Requirements
+  Land_DOCCS: DOCCS Land Requirements
+  Land_EW: EW Land Requirements
+  Land_OA: OA Land Requirements
+  Land_SCS: SCS Land Requirements
+  Nitrogen: Nitrogen used for CDR
+  OA: Maximum Capacity of OA
+  OA_2050: Maximum Capacity OA by 2050
+  OA_2075: Maximum Capacity OA by 2075
+  OA_2100: Maximum Capacity OA by 2100
+  OA_removed: Removals delivered by OA
+  OPEX_A/R: A/R Operational Costs
+  OPEX_BC: BC Operational Costs
+  OPEX_BECCS: BECCS Operational Costs
+  OPEX_DACCS: DACCS Operational Costs
+  OPEX_DOCCS: DOCCS Operational Costs
+  OPEX_EW: EW Operational Costs
+  OPEX_OA: OA Operational Costs
+  OPEX_SCS: SCS Operational Costs
+  Phosphorous: Phosphorous used for CDR
+  Removals: Tons Removed
+  SCS: Maximum Capacity of SCS
+  SCS_2050: Maximum Capacity SCS by 2050
+  SCS_2075: Maximum Capacity SCS by 2075
+  SCS_2100: Maximum Capacity SCS by 2100
+  SCS_removed: Removals delivered by SCS
+  SCref_A/R: A/R Initial Costs
+  SCref_BC: BC Initial Costs
+  SCref_BECCS: BECCS Initial Costs
+  SCref_DACCS: DACCS Initial Costs
+  SCref_DOCCS: DOCCS Initial Costs
+  SCref_EW: EW Initial Costs
+  SCref_OA: OA Initial Costs
+  SCref_SCS: SCS Initial Costs
+  Solved: Solved Futures
+  Water: Water used for CDR
+  Xmax_A/R: A/R Max. Annual Capacity
+  Xmax_BC: BC Max. Annual Capacity
+  Xmax_BECCS: BECCS Max. Annual Capacity
+  Xmax_DACCS: DACCS Max. Annual Capacity
+  Xmax_DOCCS: DOCCS Max. Annual Capacity
+  Xmax_EW: EW Max. Annual Capacity
+  Xmax_OA: OA Max. Annual Capacity
+  Xmax_SCS: SCS Max. Annual Capacity
+  Ymax_A/R: A/R Maximum Potential
+  Ymax_BC: BC Maximum Potential
+  Ymax_BECCS: BECCS Maximum Potential
+  Ymax_DACCS: DACCS Maximum Potential
+  Ymax_DOCCS: DOCCS Maximum Potential
+  Ymax_EW: EW Maximum Potential
+  Ymax_OA: OA Maximum Potential
+  Ymax_SCS: SCS Maximum Potential
+  Yref_A/R: A/R Initial Capacity
+  Yref_BC: BC Initial Capacity
+  Yref_BECCS: BECCS Initial Capacity
+  Yref_DACCS: DACCS Initial Capacity
+  Yref_DOCCS: DOCCS Initial Capacity
+  Yref_EW: EW Initial Capacity
+  Yref_OA: OA Initial Capacity
+  Yref_SCS: SCS Initial Capacity
+all_metrics_units:
+  A/R: tCO2
+  A/R_2050: tCO2/yr
+  A/R_2075: tCO2/yr
+  A/R_2100: tCO2/yr
+  A/R_removed: tCO2
+  BC: tCO2
+  BC_2050: tCO2/yr
+  BC_2075: tCO2/yr
+  BC_2100: tCO2/yr
+  BC_removed: tCO2
+  BECCS: tCO2
+  BECCS_2050: tCO2/yr
+  BECCS_2075: tCO2/yr
+  BECCS_2100: tCO2/yr
+  BECCS_removed: tCO2
+  CDRRequired: tCO2
+  Costs: USD
+  DACCS: tCO2
+  DACCS_2050: tCO2/yr
+  DACCS_2075: tCO2/yr
+  DACCS_2100: tCO2/yr
+  DACCS_removed: tCO2
+  DOCCS: tCO2
+  DOCCS_2050: tCO2/yr
+  DOCCS_2075: tCO2/yr
+  DOCCS_2100: tCO2/yr
+  DOCCS_removed: tCO2
+  ER_A/R: '%'
+  ER_BC: '%'
+  ER_BECCS: '%'
+  ER_DACCS: '%'
+  ER_DOCCS: '%'
+  ER_EW: '%'
+  ER_OA: '%'
+  ER_SCS: '%'
+  EW: tCO2
+  EW_2050: tCO2/yr
+  EW_2075: tCO2/yr
+  EW_2100: tCO2/yr
+  EW_removed: tCO2
+  Energy: GJ
+  EnergyL: year
+  Energy_A/R: GJ/tCO2
+  Energy_BC: GJ/tCO2
+  Energy_BECCS: GJ/tCO2
+  Energy_DACCS: GJ/tCO2
+  Energy_DOCCS: GJ/tCO2
+  Energy_EW: GJ/tCO2
+  Energy_OA: GJ/tCO2
+  Energy_SCS: GJ/tCO2
+  GeoSt: tCO2/yr
+  Land: ha
+  LandL: ha
+  Land_A/R: ha/tCO2
+  Land_BC: ha/tCO2
+  Land_BECCS: ha/tCO2
+  Land_DACCS: ha/tCO2
+  Land_DOCCS: ha/tCO2
+  Land_EW: ha/tCO2
+  Land_OA: ha/tCO2
+  Land_SCS: ha/tCO2
+  Nitrogen: Mt N
+  OA: tCO2
+  OA_2050: tCO2/yr
+  OA_2075: tCO2/yr
+  OA_2100: tCO2/yr
+  OA_removed: tCO2
+  OPEX_A/R: USD/tCO2
+  OPEX_BC: USD/tCO2
+  OPEX_BECCS: USD/tCO2
+  OPEX_DACCS: USD/tCO2
+  OPEX_DOCCS: USD/tCO2
+  OPEX_EW: USD/tCO2
+  OPEX_OA: USD/tCO2
+  OPEX_SCS: USD/tCO2
+  Phosphorous: Mt P
+  Removals: tCO2
+  SCS: tCO2
+  SCS_2050: tCO2/yr
+  SCS_2075: tCO2/yr
+  SCS_2100: tCO2/yr
+  SCS_removed: tCO2
+  SCref_A/R: USD/tCO2/yr
+  SCref_BC: USD/tCO2/yr
+  SCref_BECCS: USD/tCO2/yr
+  SCref_DACCS: USD/tCO2/yr
+  SCref_DOCCS: USD/tCO2/yr
+  SCref_EW: USD/tCO2/yr
+  SCref_OA: USD/tCO2/yr
+  SCref_SCS: USD/tCO2/yr
+  Solved: binary
+  Water: km3
+  Xmax_A/R: tCO2/yr
+  Xmax_BC: tCO2/yr
+  Xmax_BECCS: tCO2/yr
+  Xmax_DACCS: tCO2/yr
+  Xmax_DOCCS: tCO2/yr
+  Xmax_EW: tCO2/yr
+  Xmax_OA: tCO2/yr
+  Xmax_SCS: tCO2/yr
+  Ymax_A/R: tCO2/yr
+  Ymax_BC: tCO2/yr
+  Ymax_BECCS: tCO2/yr
+  Ymax_DACCS: tCO2/yr
+  Ymax_DOCCS: tCO2/yr
+  Ymax_EW: tCO2/yr
+  Ymax_OA: tCO2/yr
+  Ymax_SCS: tCO2/yr
+  Yref_A/R: tCO2/yr
+  Yref_BC: tCO2/yr
+  Yref_BECCS: tCO2/yr
+  Yref_DACCS: tCO2/yr
+  Yref_DOCCS: tCO2/yr
+  Yref_EW: tCO2/yr
+  Yref_OA: tCO2/yr
+  Yref_SCS: tCO2/yr
