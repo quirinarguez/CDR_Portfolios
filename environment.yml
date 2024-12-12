@@ -22,3 +22,4 @@ dependencies:
     - plotly==5.24.1 # https://pypi.org/project/plotly/
     - PyYAML 
     - openpyxl
+    - cmcrameri
