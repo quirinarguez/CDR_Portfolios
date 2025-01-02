@@ -1,4 +1,4 @@
-name: cdr_portfolio_model_test
+name: cdr_portfolio_model
 channels:
   - conda-forge
   - defaults
