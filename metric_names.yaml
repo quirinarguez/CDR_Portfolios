@@ -4,16 +4,19 @@ all_metrics_names:
   A/R_2075: Maximum Capacity A/R by 2075
   A/R_2100: Maximum Capacity A/R by 2100
   A/R_removed: Removals delivered by A/R
+  A/R_removed_2050: Removals delivered by A/R by 2050
   BC: Maximum Capacity of BC
   BC_2050: Maximum Capacity BC by 2050
   BC_2075: Maximum Capacity BC by 2075
   BC_2100: Maximum Capacity BC by 2100
   BC_removed: Removals delivered by BC
+  BC_removed_2050: Removals delivered by BC by 2050
   BECCS: Maximum Capacity of BECCS
   BECCS_2050: Maximum Capacity BECCS by 2050
   BECCS_2075: Maximum Capacity BECCS by 2075
   BECCS_2100: Maximum Capacity BECCS by 2100
   BECCS_removed: Removals delivered by BECCS
+  BECCS_removed_2050: Removals delivered by BECCS by 2050
   CDRRequired: Removals Required (2020 - 2100)
   Costs: Discounted Cumulative Costs
   DACCS: Maximum Capacity of DACCS
@@ -21,11 +24,13 @@ all_metrics_names:
   DACCS_2075: Maximum Capacity DACCS by 2075
   DACCS_2100: Maximum Capacity DACCS by 2100
   DACCS_removed: Removals delivered by DACCS
+  DACCS_removed_2050: Removals delivered by DACCS by 2050
   DOCCS: Maximum Capacity of DOCCS
   DOCCS_2050: Maximum Capacity DOCCS by 2050
   DOCCS_2075: Maximum Capacity DOCCS by 2075
   DOCCS_2100: Maximum Capacity DOCCS by 2100
   DOCCS_removed: Removals delivered by DOCCS
+  DOCCS_removed_2050: Removals delivered by DOCCS by 2050
   ER_A/R: A/R Experience Parameter
   ER_BC: BC Experience Parameter
   ER_BECCS: BECCS Experience Parameter
@@ -39,6 +44,7 @@ all_metrics_names:
   EW_2075: Maximum Capacity EW by 2075
   EW_2100: Maximum Capacity EW by 2100
   EW_removed: Removals delivered by EW
+  EW_removed_2050: Removals delivered by EW by 2050
   Energy: Energy used for CDR
   EnergyL: Year at which energy becomes available for CDR
   Energy_A/R: A/R Energy Requirements
@@ -66,6 +72,7 @@ all_metrics_names:
   OA_2075: Maximum Capacity OA by 2075
   OA_2100: Maximum Capacity OA by 2100
   OA_removed: Removals delivered by OA
+  OA_removed_2050: Removals delivered by OA by 2050
   OPEX_A/R: A/R Operational Costs
   OPEX_BC: BC Operational Costs
   OPEX_BECCS: BECCS Operational Costs
@@ -81,6 +88,7 @@ all_metrics_names:
   SCS_2075: Maximum Capacity SCS by 2075
   SCS_2100: Maximum Capacity SCS by 2100
   SCS_removed: Removals delivered by SCS
+  SCS_removed_2050: Removals delivered by SCS by 2050
   SCref_A/R: A/R Initial Costs
   SCref_BC: BC Initial Costs
   SCref_BECCS: BECCS Initial Costs
@@ -121,16 +129,19 @@ all_metrics_units:
   A/R_2075: tCO2/yr
   A/R_2100: tCO2/yr
   A/R_removed: tCO2
+  A/R_removed_2050: tCO2
   BC: tCO2
   BC_2050: tCO2/yr
   BC_2075: tCO2/yr
   BC_2100: tCO2/yr
   BC_removed: tCO2
+  BC_removed_2050: tCO2
   BECCS: tCO2
   BECCS_2050: tCO2/yr
   BECCS_2075: tCO2/yr
   BECCS_2100: tCO2/yr
   BECCS_removed: tCO2
+  BECCS_removed_2050: tCO2
   CDRRequired: tCO2
   Costs: USD
   DACCS: tCO2
@@ -138,11 +149,13 @@ all_metrics_units:
   DACCS_2075: tCO2/yr
   DACCS_2100: tCO2/yr
   DACCS_removed: tCO2
+  DACCS_removed_2050: tCO2
   DOCCS: tCO2
   DOCCS_2050: tCO2/yr
   DOCCS_2075: tCO2/yr
   DOCCS_2100: tCO2/yr
   DOCCS_removed: tCO2
+  DOCCS_removed_2050: tCO2
   ER_A/R: '%'
   ER_BC: '%'
   ER_BECCS: '%'
@@ -156,6 +169,7 @@ all_metrics_units:
   EW_2075: tCO2/yr
   EW_2100: tCO2/yr
   EW_removed: tCO2
+  EW_removed_2050: tCO2
   Energy: GJ
   EnergyL: year
   Energy_A/R: GJ/tCO2
@@ -183,6 +197,7 @@ all_metrics_units:
   OA_2075: tCO2/yr
   OA_2100: tCO2/yr
   OA_removed: tCO2
+  OA_removed_2050: tCO2
   OPEX_A/R: USD/tCO2
   OPEX_BC: USD/tCO2
   OPEX_BECCS: USD/tCO2
@@ -198,6 +213,7 @@ all_metrics_units:
   SCS_2075: tCO2/yr
   SCS_2100: tCO2/yr
   SCS_removed: tCO2
+  SCS_removed_2050: tCO2
   SCref_A/R: USD/tCO2/yr
   SCref_BC: USD/tCO2/yr
   SCref_BECCS: USD/tCO2/yr

@@ -1,7 +1,8 @@
 output/
 assessment/input_data/
 assessment/int_data/
-
+PortfolioFiles/results_from_modelling
+#PortfolioFiles/sample_of_futures
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

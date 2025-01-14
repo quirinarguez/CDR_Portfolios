@@ -441,7 +441,6 @@ class model_solving_futures:
         def unit_costs_b(y, b, Y_ref, SC_ref): # Outputs the initial (y = 1) unit cost
             return SC_ref*((y/Y_ref)**(-b))
         
-        
         for futureID in self.df_input.loc[0:self.n_evaluate-1].index:
         #for futureID in [0,1,2,3,4,5,6,7,8,9]:
             # Dictionary where all variables relevant for a future are stored. This will then be added to "conf_batch"
@@ -553,7 +552,7 @@ class model_solving_futures:
 
             all_info += [[futureID, dict_ID]]
         
-        print("Done with preparing input data - let's start solving for futures at:", datetime.datetime.now().time().strftime("%H:%M:%S"))
+        print("Done with preparing input data - started solving for futures at:", datetime.datetime.now().time().strftime("%H:%M:%S"))
 
         # ======================================================================================================================
         def parallel_process(conf_batch, n_jobs=16, front_num=3):
@@ -597,9 +596,10 @@ class model_solving_futures:
         total_future = pd.DataFrame()
         max_capacity = pd.DataFrame()  # Maximum capacity 
         max_experience = pd.DataFrame() # Maximum experience
-        max_resources = pd.DataFrame() 
-        removed_per_CDR = pd.DataFrame()
-        
+        max_resources = pd.DataFrame() # Resources used
+        removed_per_CDR = pd.DataFrame() # Removed in entire time period (i.e., 2020 - 2100)
+        removed_per_CDR_2050 = pd.DataFrame() # Removed by 2050 (incl. 2050)
+
         results_2050 = pd.DataFrame()
         aggregated_2050 = pd.DataFrame()
 
@@ -630,13 +630,19 @@ class model_solving_futures:
 
             # Saving the removals per CDR option 
             removed_in_future = pd.DataFrame(columns= [self.i[n] for n in range(0, len(self.i))])
+            removed_in_future_2050 = pd.DataFrame(columns= [self.i[n] for n in range(0, len(self.i))])
+
             for CDR in self.i:
                 removed = 0
+                removed_2050 = 0
                 for m in range(self.k1, len(self.k)):
-                    #removed += results_in_future.loc[(futureID,CDR,m),'Removals per period']
                     removed += dict_results['b'][0][CDR,m]
+                    if m <= 6: removed_2050 += dict_results['b'][0][CDR,m] #i.e., if 2050 or before
                 removed_in_future.loc[futureID,CDR] = removed
+                removed_in_future_2050.loc[futureID,CDR] = removed_2050
+
             removed_per_CDR = pd.concat([removed_per_CDR, removed_in_future])
+            removed_per_CDR_2050 = pd.concat([removed_per_CDR_2050, removed_in_future_2050])
 
             results = pd.concat([results, results_in_future])
             
@@ -709,22 +715,23 @@ class model_solving_futures:
         max_years.index.names = ['future_id']
         
         removed_per_CDR.columns = [str(col) + '_removed' for col in removed_per_CDR.columns]
+        removed_per_CDR_2050.columns = [str(col) + '_removed_2050' for col in removed_per_CDR_2050.columns]
 
         # Add all relevant dataframes:
-        aggregated_results = pd.concat([aggregated_results,total_future,max_capacity,max_resources,max_years,removed_per_CDR], axis=1)
+        aggregated_results = pd.concat([aggregated_results,total_future,max_capacity,max_resources,max_years,removed_per_CDR,removed_per_CDR_2050], axis=1)
         aggregated_results.index.names = ['future_id']
 
         file_name, file_extension = os.path.splitext(self.output_file)
         if file_extension.split('.')[1] == 'xlsx': aggregated_results.to_excel(self.output_file, index=True)
         if file_extension.split('.')[1] == 'csv': aggregated_results.to_csv(self.output_file, index=True)
         
-        print('Data has been saved at %s on %s' %(datetime.datetime.now().time().strftime("%H:%M:%S"),date.today().strftime('%d.%m.%Y')))
+        print('Data generated has been saved to %s at %s on %s' %(self.output_file.split('/'), datetime.datetime.now().time().strftime("%H:%M:%S"),date.today().strftime('%d.%m.%Y')))
 
         all_metrics_ranges = {key: [] for key in aggregated_results.columns.to_list()}
         for metric in aggregated_results.columns:
             all_metrics_ranges[metric].append([aggregated_results[metric].min(),aggregated_results[metric].max()])
 
-        '''all_metrics_names = dict(zip(aggregated_results.columns.to_list(),['DACCS Energy Requirements','DOCCS Energy Requirements','EW Energy Requirements', 'OA Energy Requirements', 'Year at which energy becomes available for CDR',
+        all_metrics_names = dict(zip(aggregated_results.columns.to_list(),['DACCS Energy Requirements','DOCCS Energy Requirements','EW Energy Requirements', 'OA Energy Requirements', 'Year at which energy becomes available for CDR',
         'A/R Land Requirements','BECCS Land Requirements','Land Limit',
         'A/R Experience Parameter','BC Experience Parameter','BECCS Experience Parameter','DACCS Experience Parameter','DOCCS Experience Parameter','EW Experience Parameter','OA Experience Parameter','SCS Experience Parameter',
         'Removals Required (2020 - 2100)','A/R Maximum Potential', 'BC Maximum Potential', 'BECCS Maximum Potential','DACCS Maximum Potential', 'DOCCS Maximum Potential', 'EW Maximum Potential', 'OA Maximum Potential', 'SCS Maximum Potential', 
@@ -740,7 +747,8 @@ class model_solving_futures:
         'Maximum Capacity BECCS by 2050','Maximum Capacity A/R by 2050','Maximum Capacity SCS by 2050','Maximum Capacity BC by 2050','Maximum Capacity DACCS by 2050','Maximum Capacity EW by 2050','Maximum Capacity OA by 2050','Maximum Capacity DOCCS by 2050',
         'Maximum Capacity BECCS by 2075','Maximum Capacity A/R by 2075','Maximum Capacity SCS by 2075','Maximum Capacity BC by 2075','Maximum Capacity DACCS by 2075','Maximum Capacity EW by 2075','Maximum Capacity OA by 2075','Maximum Capacity DOCCS by 2075',
         'Maximum Capacity BECCS by 2100','Maximum Capacity A/R by 2100','Maximum Capacity SCS by 2100','Maximum Capacity BC by 2100','Maximum Capacity DACCS by 2100','Maximum Capacity EW by 2100','Maximum Capacity OA by 2100','Maximum Capacity DOCCS by 2100', 
-        'Removals delivered by BECCS','Removals delivered by A/R','Removals delivered by SCS','Removals delivered by BC','Removals delivered by DACCS','Removals delivered by EW','Removals delivered by OA','Removals delivered by DOCCS']))
+        'Removals delivered by BECCS','Removals delivered by A/R','Removals delivered by SCS','Removals delivered by BC','Removals delivered by DACCS','Removals delivered by EW','Removals delivered by OA','Removals delivered by DOCCS',
+        'Removals delivered by BECCS by 2050','Removals delivered by A/R by 2050','Removals delivered by SCS by 2050','Removals delivered by BC by 2050','Removals delivered by DACCS by 2050','Removals delivered by EW by 2050','Removals delivered by OA by 2050','Removals delivered by DOCCS by 2050']))
 
         all_metrics_units = dict(zip(aggregated_results.columns.to_list(),['GJ/tCO2','GJ/tCO2','GJ/tCO2','GJ/tCO2', 'year', 'ha/tCO2','ha/tCO2','ha',
         '%','%','%','%','%','%','%','%','tCO2','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr',
@@ -749,30 +757,34 @@ class model_solving_futures:
         'tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr',
         'binary', 'tCO2', 'USD','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2',
         'ha', 'GJ','km3', 'Mt N', 'Mt P','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr',
-        'tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2']))
+        'tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2/yr','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2','tCO2']))
 
         output_d = {'all_metrics_names': all_metrics_names,
                     'all_metrics_units': all_metrics_units}
         
         with open('metric_names.yaml', 'w' ) as outfile:
-	        yaml.dump(output_d, outfile, default_flow_style=False '''
+	        yaml.dump(output_d, outfile, default_flow_style=False) 
 
         return aggregated_results
     
 def main():
     with open('key_parameters.yaml', 'r') as f:
         key_parameters = yaml.safe_load(f)
-    n_evaluate = 'all'
+    
+    with open('config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+    
+    # Sensitivity Analysis runs: comment all 4 rows below to run the default scenario
+    #key_parameters['rE'] = 0.01 # Sensitivity Analysis: Scenario A
+    #key_parameters['rE'] = 0.05 # Sensitivity Analysis: Scenario B
+    #key_parameters['LTIni']={'BECCS': 5, 'A/R':5, 'SCS':5, 'BC':5, 'DACCS':5, 'EW':5, 'OA':5, 'DOCCS':5} # Sensitivity Analysis: Scenario C
+    #key_parameters['LTIni']={'BECCS': 20, 'A/R':55, 'SCS':5, 'BC':25, 'DACCS':25, 'EW':10, 'OA':5, 'DOCCS':5}  # Sensitivity Analysis: Scenario D
+            
+    futures_file = Path(config['futures_file'])
+    extra_resources = Path(config['extra_resources'])
+    n_evaluate = config['n_evaluate']
 
-    futures_file = Path('PortfolioFiles/sample_of_futures/manually_selecting_10.12.2024.csv')
-    #futures_file = Path('PortfolioFiles\sample_of_futures\File Name_15.08.2024.xlsx')
-    extra_resources = Path('PortfolioFiles/Portfolio_Files_Latest/extra_resources.xlsx')
-
-    config = {'output_string': "results_10f_manual", 
-            'output_path': 'PortfolioFiles/results_from_modelling/',
-            'output_type': "csv"} # xlsx or csv
-
-    output_file = f"{config['output_path']}{config['output_string']}_{date.today().strftime('%d.%m.%Y')}.{config['output_type']}"
+    output_file = f"{config['results_output_path']}{config['results_output_string']}_{date.today().strftime('%d.%m.%Y')}.{config['results_output_type']}"
 
     attempt = model_solving_futures(key_parameters, futures_file, n_evaluate, extra_resources, output_file, num_jobs=5, front_solve=3)
     out = attempt.solving_with_parallel()

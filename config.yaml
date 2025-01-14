@@ -1,9 +1,9 @@
 # =============== Solving Futures ===============
 extra_resources: 'PortfolioFiles/Portfolio_Files_Latest/extra_resources.xlsx'
-futures_file: 'PortfolioFiles/sample_of_futures/default_2_02.01.2025.csv'
+futures_file: 'PortfolioFiles/sample_of_futures/default_3_02.01.2025.csv'
 n_evaluate: 'all'
 
-results_output_string: "results_default_2"
+results_output_string: "results_default_3_with2050"
 results_output_path: 'PortfolioFiles/results_from_modelling/'
 results_output_type: "csv"
 
@@ -12,7 +12,7 @@ input_file_path: "PortfolioFiles/Portfolio_Files_Latest/All data.xlsx" # NOTE: '
 n_sample: 3000 # Integer >0
 sampling_method: 'size' # step or size
 future_zero: True # True or False
-output_string: "default_2"
+output_string: "default_3"
 output_path: "PortfolioFiles/sample_of_futures/"
 output_type: "csv" # xlsx or csv
 
