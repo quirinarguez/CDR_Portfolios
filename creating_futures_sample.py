@@ -51,7 +51,7 @@ The class "sampling_futures" takes as inputs:
 '''
 
 class sampling_futures:
-    def __init__(self, input_file_path, n_sample, dict_constant, sampling_method, future_zero, output_file, output_type):
+    def __init__(self, input_file_path, n_sample, sampling_method, future_zero, output_file, output_type, dict_constant = {}):
         self.input_file = input_file_path
         self.output_file = output_file
         self.output_type = output_type
@@ -64,7 +64,7 @@ class sampling_futures:
         else: 
             self.n_sample = n_sample # self.n_sample refers to the number of futures 
 
-        self.dict_constant = dict_constant # Dictionary of values that remain constant
+        self.dict_constant = dict_constant # Dictionary of values that remain constant (currently not implemented). 
         self.sampling_method = sampling_method[0] # can take the values of 'step' or 'size'
         
         # ===================================== Importing and Formating dataframe =====================================
@@ -183,3 +183,28 @@ class sampling_futures:
         else:
             print()
             raise ValueError("%s - The sampling_method arguments accepts either 'step' or 'size'." %self.sampling_method)
+
+def main():
+    with open('config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+
+    input_file_path = Path(config['input_file_path'])
+
+    n_sample = config['n_sample']
+    sampling_method = (config['sampling_method'], config[f"sampling_{config['sampling_method']}"])
+    future_zero = config['future_zero']
+    output_file = f"{config['output_path']}{config['output_string']}_{date.today().strftime('%d.%m.%Y')}.{config['output_type']}"
+    output_type = config['output_type']
+
+    attempt = sampling_futures(input_file_path, n_sample, sampling_method, future_zero, output_file, output_type)
+    df, units, sampled_parameters = attempt.sample()
+    
+    # If FutureWarning error: ignore, as this is a bug: https://github.com/pandas-dev/pandas/issues/55025
+    
+    print()
+    print('Dataframe has been saved to', output_file)
+
+    return df
+
+if __name__ == '__main__':
+    main()

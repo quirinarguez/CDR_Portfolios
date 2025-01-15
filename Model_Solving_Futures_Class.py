@@ -731,7 +731,7 @@ class model_solving_futures:
         for metric in aggregated_results.columns:
             all_metrics_ranges[metric].append([aggregated_results[metric].min(),aggregated_results[metric].max()])
 
-        all_metrics_names = dict(zip(aggregated_results.columns.to_list(),['DACCS Energy Requirements','DOCCS Energy Requirements','EW Energy Requirements', 'OA Energy Requirements', 'Year at which energy becomes available for CDR',
+        '''all_metrics_names = dict(zip(aggregated_results.columns.to_list(),['DACCS Energy Requirements','DOCCS Energy Requirements','EW Energy Requirements', 'OA Energy Requirements', 'Year at which energy becomes available for CDR',
         'A/R Land Requirements','BECCS Land Requirements','Land Limit',
         'A/R Experience Parameter','BC Experience Parameter','BECCS Experience Parameter','DACCS Experience Parameter','DOCCS Experience Parameter','EW Experience Parameter','OA Experience Parameter','SCS Experience Parameter',
         'Removals Required (2020 - 2100)','A/R Maximum Potential', 'BC Maximum Potential', 'BECCS Maximum Potential','DACCS Maximum Potential', 'DOCCS Maximum Potential', 'EW Maximum Potential', 'OA Maximum Potential', 'SCS Maximum Potential', 
@@ -762,8 +762,8 @@ class model_solving_futures:
         output_d = {'all_metrics_names': all_metrics_names,
                     'all_metrics_units': all_metrics_units}
         
-        with open('metric_names.yaml', 'w' ) as outfile:
-	        yaml.dump(output_d, outfile, default_flow_style=False) 
+        with open('metric_names.yaml', 'w') as outfile:
+	        yaml.dump(output_d, outfile, default_flow_style=False)''' 
 
         return aggregated_results
     
