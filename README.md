@@ -12,6 +12,7 @@ Additionally to these requirememts, to solve the mixed-integer linear programmin
 ## Replicating Results
 
 Replicating the results involves the following steps:
+
     1. Importing uncertain ranges and creating a future sample (<creating_futures_sample.py>). This will be the input file to step 2. Alternatively, one can directly use an existing input file from 'PortfolioFiles/sample_of_futures' and skip Step 1.
         - This file reads data from "config.yaml" and can be run directly through the Terminal using the <main> function at the end of the file. 
     
