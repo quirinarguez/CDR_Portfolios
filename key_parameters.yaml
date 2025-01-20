@@ -50,14 +50,15 @@ DACCS_available: 2030
 DOCCS_available: 2040
 OA_available: 2050
 
-# For plotting purposes
-color_map: 'Set2'
+# For plotting purposes 
+# Color Map for later plotting - QUALITATIVE COLOUR SCHEMES by Paul Tol
+# Available from https://personal.sron.nl/~pault/#sec:qualitative - thank you!
 color_per_CDR:
-  'BECCS': 0.8
-  'A/R': 0.1
-  'SCS': 0.9
-  'BC': 0.2
-  'DACCS': 0.7
-  'EW': 0.3
-  'OA': 0.4
-  'DOCCS': 0.5
+  'BECCS': '#44BB99'
+  'A/R': '#BBCC33'
+  'SCS': '#AA4499'
+  'BC': '#EE8866'
+  'DACCS': '#EEDD88'
+  'EW': '#FFAABB'
+  'OA': '#77AADD'
+  'DOCCS': '#99DDFF'
