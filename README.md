@@ -7,7 +7,7 @@ conda env create --file environment.yml
 conda activate cdr_portfolio_model
 ```
 
-Additionally to these requirememts, to solve the mixed-integer linear programming problem, this code uses Gurobi's solver, available through an academic license at: https://www.gurobi.com/academia/academic-program-and-licenses/  
+Additionally to these requirements, to solve the mixed-integer linear programming problem, this code uses Gurobi's solver, available through an academic license at: https://www.gurobi.com/academia/academic-program-and-licenses/  
 
 ## Replicating Results
 
